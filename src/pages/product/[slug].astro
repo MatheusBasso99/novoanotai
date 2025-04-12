@@ -1,0 +1,205 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ImageZoom from '../../components/ImageZoom.astro';
+import { getProductBySlug, type Product, products } from '../../data/products';
+
+// Typed route params
+export async function getStaticPaths() {
+  return products.map((product) => ({
+    params: { slug: product.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const product = getProductBySlug(slug as string);
+
+// Handle case where product is not found
+if (!product) {
+  return Astro.redirect('/404');
+}
+
+// Get related products (same category, excluding current product)
+const relatedProducts = products
+  .filter(p => p.category === product.category && p.id !== product.id)
+  .slice(0, 3);
+---
+
+<BaseLayout title={product.name} description={product.description}>
+  <section class="py-6 md:py-12 bg-background">
+    <div class="container mx-auto px-4">
+      <div class="mb-4 md:mb-8">
+        <a href="/menu" class="text-primary hover:underline inline-flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          </svg>
+          Voltar para o Cardápio
+        </a>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
+        <!-- Product Image -->
+        <div class="rounded-lg overflow-hidden">
+          <ImageZoom 
+            src={product.image} 
+            alt={product.name}
+            class="aspect-[4/3] h-auto"
+          />
+        </div>
+        
+        <!-- Product Info -->
+        <div>
+          <span class="bg-secondary bg-opacity-10 text-secondary text-sm font-medium px-3 py-1 rounded-full">
+            {product.category}
+          </span>
+          <h1 class="font-display font-bold text-2xl sm:text-3xl md:text-4xl mt-3 mb-4 text-dark">{product.name}</h1>
+          
+          <div class="flex flex-wrap items-center gap-2 mb-6">
+            <span class="text-2xl font-bold text-primary">R$ {product.price.toFixed(2)}</span>
+            {product.tags && product.tags.map(tag => (
+              <span class="bg-accent bg-opacity-20 text-dark text-xs px-2 py-1 rounded">
+                {tag}
+              </span>
+            ))}
+          </div>
+          
+          <div class="mb-8">
+            <h2 class="font-display font-bold text-xl mb-2 text-dark">Descrição</h2>
+            <p class="text-gray-700 mb-6 text-base sm:text-lg">{product.longDescription}</p>
+            
+            {product.ingredients && (
+              <>
+                <h2 class="font-display font-bold text-xl mb-2 text-dark">Ingredientes</h2>
+                <ul class="list-disc list-inside text-gray-700 mb-6">
+                  {product.ingredients.map(ingredient => (
+                    <li class="mb-1">{ingredient}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </div>
+          
+          <a 
+            href={product.checkoutLink} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="bg-primary text-white font-bold py-3 px-8 rounded-lg text-lg w-full block text-center hover:bg-opacity-90 transition-colors mb-4"
+          >
+            Fazer Pedido
+          </a>
+          
+          <p class="text-sm text-gray-500 text-center">
+            Ao clicar em "Fazer Pedido", você será redirecionado para a página de pagamento.
+          </p>
+        </div>
+      </div>
+
+      <!-- Share section for mobile - easy sharing -->
+      <div class="mt-8 py-4 border-t border-gray-200 md:hidden">
+        <h3 class="font-bold text-lg mb-3 text-center">Compartilhar</h3>
+        <div class="flex justify-center gap-4">
+          <!-- WhatsApp Share -->
+          <a 
+            href={`whatsapp://send?text=Veja este delicioso ${product.name} no Sabor & Arte: ${Astro.url.href}`} 
+            class="bg-[#25D366] text-white p-3 rounded-full"
+            aria-label="Compartilhar no WhatsApp"
+          >
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+            </svg>
+          </a>
+          
+          <!-- Facebook Share -->
+          <a 
+            href={`https://www.facebook.com/sharer/sharer.php?u=${Astro.url.href}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="bg-[#3b5998] text-white p-3 rounded-full"
+            aria-label="Compartilhar no Facebook"
+          >
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
+            </svg>
+          </a>
+          
+          <!-- Copy Link -->
+          <button 
+            id="copy-link-btn"
+            class="bg-gray-700 text-white p-3 rounded-full"
+            aria-label="Copiar link"
+          >
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Related Products -->
+  {relatedProducts.length > 0 && (
+    <section class="py-8 md:py-12 bg-white">
+      <div class="container mx-auto px-4">
+        <h2 class="font-display font-bold text-xl md:text-2xl mb-6 text-center">
+          Você Também Pode Gostar
+        </h2>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+          {relatedProducts.map(relatedProduct => (
+            <div class="menu-item hover-scale">
+              <div class="overflow-hidden">
+                <img 
+                  src={relatedProduct.image} 
+                  alt={relatedProduct.name} 
+                  class="menu-item-image aspect-[4/3] h-auto" 
+                  loading="lazy"
+                />
+              </div>
+              <div class="p-4">
+                <h3 class="font-display font-bold text-lg text-dark">{relatedProduct.name}</h3>
+                <p class="text-gray-600 text-sm line-clamp-2 mt-1 mb-2">{relatedProduct.description}</p>
+                <div class="flex justify-between items-center mt-3">
+                  <span class="font-bold text-primary">R$ {relatedProduct.price.toFixed(2)}</span>
+                  <a href={`/product/${relatedProduct.slug}`} class="bg-secondary text-white py-2 px-4 rounded-lg text-sm hover:bg-opacity-90 transition-colors">
+                    Ver detalhes
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Toast notification for link copying -->
+  <div id="toast" class="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white py-3 px-6 rounded-lg opacity-0 transition-opacity duration-300 pointer-events-none">
+    Link copiado!
+  </div>
+  
+  <script>
+    // Copy link functionality
+    const copyLinkBtn = document.getElementById('copy-link-btn');
+    const toast = document.getElementById('toast');
+    
+    if (copyLinkBtn && toast) {
+      copyLinkBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(window.location.href)
+          .then(() => {
+            // Show toast
+            toast.classList.remove('opacity-0');
+            toast.classList.add('opacity-100');
+            
+            // Hide toast after 2 seconds
+            setTimeout(() => {
+              toast.classList.remove('opacity-100');
+              toast.classList.add('opacity-0');
+            }, 2000);
+          })
+          .catch(err => {
+            console.error('Failed to copy: ', err);
+          });
+      });
+    }
+  </script>
+</BaseLayout>

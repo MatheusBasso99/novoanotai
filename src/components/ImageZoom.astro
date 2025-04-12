@@ -1,0 +1,62 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  class?: string;
+}
+
+const { src, alt, class: className = "" } = Astro.props;
+---
+
+<div class="image-zoom-container relative overflow-hidden rounded-lg shadow-lg">
+  <img 
+    src={src} 
+    alt={alt} 
+    class={`w-full h-full object-cover transition-transform duration-500 ${className}`}
+  />
+  <div class="absolute inset-0 bg-primary opacity-0 transition-opacity duration-300 flex items-center justify-center">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-white">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+    </svg>
+  </div>
+</div>
+
+<style>
+  .image-zoom-container:hover img {
+    transform: scale(1.05);
+  }
+  
+  .image-zoom-container:hover .bg-primary {
+    opacity: 0.3;
+  }
+</style>
+
+<script>
+  // Add click event to open image in a modal/lightbox
+  const container = document.querySelector('.image-zoom-container');
+  if (container) {
+    container.addEventListener('click', () => {
+      const img = container.querySelector('img');
+      if (img) {
+        // Create a lightbox effect
+        const overlay = document.createElement('div');
+        overlay.classList.add('fixed', 'inset-0', 'bg-black', 'bg-opacity-90', 'z-50', 'flex', 'items-center', 'justify-center', 'p-4');
+        
+        const imgClone = document.createElement('img');
+        imgClone.src = img.src;
+        imgClone.alt = img.alt;
+        imgClone.classList.add('max-w-full', 'max-h-full', 'object-contain');
+        
+        overlay.appendChild(imgClone);
+        document.body.appendChild(overlay);
+        document.body.style.overflow = 'hidden';
+        
+        // Close on click
+        overlay.addEventListener('click', () => {
+          document.body.removeChild(overlay);
+          document.body.style.overflow = '';
+        });
+      }
+    });
+  }
+</script>

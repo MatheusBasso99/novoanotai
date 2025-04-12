@@ -1,0 +1,28 @@
+---
+interface Props {
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+  image: string;
+  slug: string;
+}
+
+const { id, name, price, description, image, slug } = Astro.props;
+---
+
+<div class="menu-item hover-scale">
+  <div class="overflow-hidden">
+    <img src={image} alt={name} class="menu-item-image" />
+  </div>
+  <div class="p-4">
+    <h3 class="font-display font-bold text-lg text-dark">{name}</h3>
+    <p class="text-gray-600 text-sm line-clamp-2 mt-1 mb-2">{description}</p>
+    <div class="flex justify-between items-center mt-3">
+      <span class="font-bold text-primary">R$ {price.toFixed(2)}</span>
+      <a href={`/product/${slug}`} class="bg-secondary text-white py-1.5 px-4 rounded text-sm hover:bg-opacity-90 transition-colors">
+        Ver detalhes
+      </a>
+    </div>
+  </div>
+</div>

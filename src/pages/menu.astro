@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CategorySection from '../components/CategorySection.astro';
+import { products } from '../data/products';
+
+// Group products by category
+const categories = [...new Set(products.map(product => product.category))];
+const productsByCategory = categories.map(category => ({
+  name: category,
+  products: products.filter(product => product.category === category)
+}));
+---
+
+<BaseLayout title="Cardápio" description="Explore nosso cardápio com deliciosos pratos, pizzas, massas e sobremesas">
+  
+  <!-- Hero Section -->
+  <section class="bg-primary text-white py-16">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="font-display font-bold text-4xl md:text-5xl mb-4">Nosso Cardápio</h1>
+      <p class="text-xl max-w-3xl mx-auto">
+        Descubra nossa seleção de pratos preparados com ingredientes frescos e muito amor.
+      </p>
+    </div>
+  </section>
+
+  <!-- Menu Categories -->
+  <section class="py-12 bg-background">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-center gap-4 mb-12 flex-wrap">
+        {categories.map(category => (
+          <a href={`#${category.toLowerCase().replace(/\s+/g, '-')}`} class="bg-white text-secondary font-bold py-2 px-6 rounded-full shadow-sm hover:bg-secondary hover:text-white transition-colors">
+            {category}
+          </a>
+        ))}
+      </div>
+      
+      {productsByCategory.map(category => (
+        <CategorySection 
+          category={category.name}
+          products={category.products}
+        />
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="bg-secondary text-white py-12">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="font-display font-bold text-3xl mb-4">Tem alguma dúvida?</h2>
+      <p class="text-lg mb-8 max-w-2xl mx-auto">
+        Nossos atendentes estão prontos para ajudar com informações sobre ingredientes, alergias ou qualquer outra questão.
+      </p>
+      <a href="/contact" class="bg-primary text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-opacity-90 transition-colors">
+        Entre em Contato
+      </a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,134 @@
+---
+// Props interface
+interface Props {
+  title: string;
+  description?: string;
+}
+
+// Imports
+import '../styles/global.css';
+import CookieNotice from '../components/CookieNotice.astro';
+
+// Destructure props with default values
+const { 
+  title, 
+  description = "Descubra os melhores sabores em nosso restaurante" 
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title} | Restaurante Sabor & Arte</title>
+    
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-background min-h-screen flex flex-col">
+    <header class="bg-white shadow-sm sticky top-0 z-30">
+      <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <a href="/" class="text-2xl font-display font-bold text-primary">Sabor & Arte</a>
+        <nav class="hidden md:block">
+          <ul class="flex gap-6">
+            <li><a href="/" class="text-dark hover:text-primary transition-colors">Início</a></li>
+            <li><a href="/menu" class="text-dark hover:text-primary transition-colors">Cardápio</a></li>
+            <li><a href="/about" class="text-dark hover:text-primary transition-colors">Sobre</a></li>
+            <li><a href="/contact" class="text-dark hover:text-primary transition-colors">Contato</a></li>
+          </ul>
+        </nav>
+        
+        <!-- Mobile menu button -->
+        <button class="md:hidden text-dark" id="mobile-menu-button">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Mobile menu -->
+      <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+      <div class="mobile-menu p-4" id="mobile-menu">
+        <div class="flex justify-between items-center mb-6">
+          <span class="text-xl font-bold text-primary">Menu</span>
+          <button id="close-menu">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <nav>
+          <ul class="flex flex-col gap-4">
+            <li><a href="/" class="block p-2 text-dark hover:bg-gray-100 rounded">Início</a></li>
+            <li><a href="/menu" class="block p-2 text-dark hover:bg-gray-100 rounded">Cardápio</a></li>
+            <li><a href="/about" class="block p-2 text-dark hover:bg-gray-100 rounded">Sobre</a></li>
+            <li><a href="/contact" class="block p-2 text-dark hover:bg-gray-100 rounded">Contato</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="flex-grow">
+      <slot />
+    </main>
+
+    <footer class="bg-secondary text-white py-12">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h3 class="font-display font-bold text-xl mb-4">Sabor & Arte</h3>
+            <p class="mb-4">Comida deliciosa, feita com ingredientes frescos e muito amor.</p>
+            <p>© {new Date().getFullYear()} Sabor & Arte. Todos os direitos reservados.</p>
+          </div>
+          <div>
+            <h3 class="font-display font-bold text-xl mb-4">Horário</h3>
+            <p class="mb-2">Segunda - Sexta: 11h às 23h</p>
+            <p class="mb-2">Sábado - Domingo: 11h às 00h</p>
+            <p>Feriados: 12h às 22h</p>
+          </div>
+          <div>
+            <h3 class="font-display font-bold text-xl mb-4">Contato</h3>
+            <p class="mb-2">Rua do Sabor, 123</p>
+            <p class="mb-2">São Paulo, SP</p>
+            <p class="mb-2">contato@saborarte.com.br</p>
+            <p>(11) 99999-9999</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Cookie Notice -->
+    <CookieNotice />
+
+    <script>
+      // Mobile menu toggle
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const closeMenuButton = document.getElementById('close-menu');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+      
+      if (mobileMenuButton && closeMenuButton && mobileMenu && mobileMenuOverlay) {
+        mobileMenuButton.addEventListener('click', () => {
+          mobileMenu.classList.add('open');
+          mobileMenuOverlay.classList.add('open');
+          document.body.style.overflow = 'hidden';
+        });
+        
+        const closeMenu = () => {
+          mobileMenu.classList.remove('open');
+          mobileMenuOverlay.classList.remove('open');
+          document.body.style.overflow = '';
+        };
+        
+        closeMenuButton.addEventListener('click', closeMenu);
+        mobileMenuOverlay.addEventListener('click', closeMenu);
+      }
+    </script>
+  </body>
+</html>

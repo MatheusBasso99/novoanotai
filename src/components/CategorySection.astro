@@ -1,0 +1,32 @@
+---
+import ProductCard from './ProductCard.astro';
+import type { Product } from '../data/products';
+
+interface Props {
+  category: string;
+  products: Product[];
+}
+
+const { category, products } = Astro.props;
+const categoryId = category.toLowerCase().replace(/\s+/g, '-');
+---
+
+<div id={categoryId} class="mb-16 scroll-mt-20">
+  <div class="relative">
+    <h2 class="section-title relative z-10">{category}</h2>
+    <div class="absolute left-0 right-0 top-1/2 h-0.5 bg-gray-200 -z-10"></div>
+  </div>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
+    {products.map(product => (
+      <ProductCard 
+        id={product.id}
+        name={product.name}
+        price={product.price}
+        description={product.description}
+        image={product.image}
+        slug={product.slug}
+      />
+    ))}
+  </div>
+</div>

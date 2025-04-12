@@ -54,3 +54,166 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-dark);
 }
 
+/* Menu Item Styling */
+.menu-item {
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.menu-item-image {
+  width: 100%;
+  height: 12rem;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.hover-scale:hover .menu-item-image {
+  transform: scale(1.1);
+}
+
+/* Section Titles */
+.section-title {
+  display: inline-block;
+  background-color: white;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.875rem;
+  color: var(--color-primary);
+}
+
+/* Mobile Menu */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 16rem;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 50;
+}
+
+.mobile-menu.open {
+  transform: translateX(0);
+}
+
+.mobile-menu-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: black;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 40;
+}
+
+.mobile-menu-overlay.open {
+  opacity: 0.5;
+  pointer-events: auto;
+}
+
+/* Custom Animation */
+@keyframes sizzle {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.sizzle-animation {
+  animation: sizzle 1.5s infinite;
+}
+
+/* Combo Badge */
+.combo-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: var(--color-accent);
+  color: var(--color-dark);
+  font-weight: 700;
+  padding: 0.25rem 1rem;
+  border-radius: 9999px;
+  transform: rotate(12deg);
+}
+
+/* Spicy Indicator */
+.spicy-level {
+  display: flex;
+  align-items: center;
+  margin-top: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.spicy-dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 9999px;
+  background-color: var(--color-primary);
+  margin-left: 0.125rem;
+  margin-right: 0.125rem;
+  opacity: 0.3;
+}
+
+.spicy-dot.active {
+  opacity: 1;
+}
+
+/* Deal Tag */
+.deal-tag {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  background-color: var(--color-primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+}
+
+/* Custom Burger Builder */
+.burger-option {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.burger-option:hover {
+  background-color: rgba(245, 75, 6, 0.1);
+}
+
+.burger-option.selected {
+  border-color: var(--color-primary);
+  background-color: rgba(245, 75, 6, 0.05);
+}
+
+/* Flame effects for promotional content */
+.flame-border {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px 2px var(--color-primary);
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1.5rem;
+  }
+  
+  .menu-item-image {
+    height: 9rem;
+  }
+}

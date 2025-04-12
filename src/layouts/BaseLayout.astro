@@ -12,7 +12,7 @@ import CookieNotice from '../components/CookieNotice.astro';
 // Destructure props with default values
 const { 
   title, 
-  description = "Descubra os melhores sabores em nosso restaurante" 
+  description = "Hambúrgueres artesanais que incendeiam o paladar" 
 } = Astro.props;
 ---
 
@@ -24,7 +24,7 @@ const {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <title>{title} | Restaurante Sabor & Arte</title>
+    <title>{title} | Fire Burger</title>
     
     <!-- Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,7 +34,12 @@ const {
   <body class="bg-background min-h-screen flex flex-col">
     <header class="bg-white shadow-sm sticky top-0 z-30">
       <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-        <a href="/" class="text-2xl font-display font-bold text-primary">Sabor & Arte</a>
+        <a href="/" class="text-2xl font-display font-bold text-primary flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 mr-2">
+            <path fill-rule="evenodd" d="M12.963 2.286a.75.75 0 00-1.071-.136 9.742 9.742 0 00-3.539 6.177A7.547 7.547 0 016.648 6.61a.75.75 0 00-1.152.082A9 9 0 1015.68 4.534a7.46 7.46 0 01-2.717-2.248zM15.75 14.25a3.75 3.75 0 11-7.313-1.172c.628.465 1.35.81 2.133 1a5.99 5.99 0 011.925-3.545 3.75 3.75 0 013.255 3.717z" clip-rule="evenodd" />
+          </svg>
+          Fire Burger
+        </a>
         <nav class="hidden md:block">
           <ul class="flex gap-6">
             <li><a href="/" class="text-dark hover:text-primary transition-colors">Início</a></li>
@@ -82,22 +87,14 @@ const {
       <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 class="font-display font-bold text-xl mb-4">Sabor & Arte</h3>
-            <p class="mb-4">Comida deliciosa, feita com ingredientes frescos e muito amor.</p>
-            <p>© {new Date().getFullYear()} Sabor & Arte. Todos os direitos reservados.</p>
-          </div>
-          <div>
-            <h3 class="font-display font-bold text-xl mb-4">Horário</h3>
-            <p class="mb-2">Segunda - Sexta: 11h às 23h</p>
-            <p class="mb-2">Sábado - Domingo: 11h às 00h</p>
-            <p>Feriados: 12h às 22h</p>
-          </div>
-          <div>
-            <h3 class="font-display font-bold text-xl mb-4">Contato</h3>
-            <p class="mb-2">Rua do Sabor, 123</p>
-            <p class="mb-2">São Paulo, SP</p>
-            <p class="mb-2">contato@saborarte.com.br</p>
-            <p>(11) 99999-9999</p>
+            <h3 class="font-display font-bold text-xl mb-4 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 text-accent">
+                <path fill-rule="evenodd" d="M12.963 2.286a.75.75 0 00-1.071-.136 9.742 9.742 0 00-3.539 6.177A7.547 7.547 0 016.648 6.61a.75.75 0 00-1.152.082A9 9 0 1015.68 4.534a7.46 7.46 0 01-2.717-2.248zM15.75 14.25a3.75 3.75 0 11-7.313-1.172c.628.465 1.35.81 2.133 1a5.99 5.99 0 011.925-3.545 3.75 3.75 0 013.255 3.717z" clip-rule="evenodd" />
+              </svg>
+              Fire Burger
+            </h3>
+            <p class="mb-4">Hamburgueres artesanais com sabor intenso que vai incendiar seu paladar.</p>
+            <p>© {new Date().getFullYear()} Fire Burger. Todos os direitos reservados.</p>
           </div>
         </div>
       </div>

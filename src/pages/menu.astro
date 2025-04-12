@@ -11,14 +11,14 @@ const productsByCategory = categories.map(category => ({
 }));
 ---
 
-<BaseLayout title="Cardápio" description="Explore nosso cardápio com deliciosos pratos, pizzas, massas e sobremesas">
+<BaseLayout title="Cardápio" description="Explore nosso cardápio com hambúrgueres artesanais suculentos e combos irresistíveis">
   
   <!-- Hero Section -->
   <section class="bg-primary text-white py-16">
     <div class="container mx-auto px-4 text-center">
       <h1 class="font-display font-bold text-4xl md:text-5xl mb-4">Nosso Cardápio</h1>
       <p class="text-xl max-w-3xl mx-auto">
-        Descubra nossa seleção de pratos preparados com ingredientes frescos e muito amor.
+        Hambúrgueres preparados com ingredientes frescos e a intensidade que você merece.
       </p>
     </div>
   </section>
@@ -28,10 +28,42 @@ const productsByCategory = categories.map(category => ({
     <div class="container mx-auto px-4">
       <div class="flex justify-center gap-4 mb-12 flex-wrap">
         {categories.map(category => (
-          <a href={`#${category.toLowerCase().replace(/\s+/g, '-')}`} class="bg-white text-secondary font-bold py-2 px-6 rounded-full shadow-sm hover:bg-secondary hover:text-white transition-colors">
+          <a href={`#${category.toLowerCase().replace(/\s+/g, '-')}`} 
+             class="bg-white text-primary font-bold py-2 px-6 rounded-full shadow-sm hover:bg-primary hover:text-white transition-colors">
             {category}
           </a>
         ))}
+      </div>
+      
+      <!-- Guia de Picância -->
+      <div class="bg-white p-5 rounded-lg shadow-md mb-12 max-w-2xl mx-auto">
+        <h3 class="font-display font-bold text-xl mb-3 text-primary">Guia de Picância</h3>
+        <div class="flex items-center justify-between flex-wrap gap-4">
+          <div class="flex items-center">
+            <div class="flex mr-2">
+              <span class="spicy-dot active"></span>
+              <span class="spicy-dot opacity-30"></span>
+              <span class="spicy-dot opacity-30"></span>
+            </div>
+            <span class="text-sm">Suave</span>
+          </div>
+          <div class="flex items-center">
+            <div class="flex mr-2">
+              <span class="spicy-dot active"></span>
+              <span class="spicy-dot active"></span>
+              <span class="spicy-dot opacity-30"></span>
+            </div>
+            <span class="text-sm">Picante</span>
+          </div>
+          <div class="flex items-center">
+            <div class="flex mr-2">
+              <span class="spicy-dot active"></span>
+              <span class="spicy-dot active"></span>
+              <span class="spicy-dot active"></span>
+            </div>
+            <span class="text-sm">Extra Picante</span>
+          </div>
+        </div>
       </div>
       
       {productsByCategory.map(category => (
@@ -43,12 +75,72 @@ const productsByCategory = categories.map(category => ({
     </div>
   </section>
 
+  <!-- Build Your Own Burger Section -->
+  <section class="py-12 bg-white">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="font-display font-bold text-3xl mb-6">Monte Seu Próprio Burger</h2>
+      <p class="text-lg mb-8 max-w-2xl mx-auto">
+        Quer um hambúrguer personalizado? Escolha seus ingredientes favoritos e nós preparamos do seu jeito!
+      </p>
+      
+      <div class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+        <div class="bg-background p-6 rounded-lg shadow-md">
+          <h3 class="font-display font-bold text-xl mb-4 text-primary">Escolha Sua Base</h3>
+          <ul class="space-y-3">
+            <li class="burger-option selected">
+              <span class="flex-grow">Hambúrguer Simples (180g)</span>
+              <span class="text-primary font-bold">R$ 24,90</span>
+            </li>
+            <li class="burger-option">
+              <span class="flex-grow">Hambúrguer Duplo (2x 130g)</span>
+              <span class="text-primary font-bold">R$ 32,90</span>
+            </li>
+            <li class="burger-option">
+              <span class="flex-grow">Hamburger Premium Wagyu (180g)</span>
+              <span class="text-primary font-bold">R$ 34,90</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="bg-background p-6 rounded-lg shadow-md">
+          <h3 class="font-display font-bold text-xl mb-4 text-primary">Escolha Seus Extras</h3>
+          <ul class="space-y-3">
+            <li class="burger-option">
+              <span class="flex-grow">Bacon Crocante</span>
+              <span class="text-primary font-bold">+ R$ 5,00</span>
+            </li>
+            <li class="burger-option">
+              <span class="flex-grow">Queijo Extra</span>
+              <span class="text-primary font-bold">+ R$ 3,00</span>
+            </li>
+            <li class="burger-option">
+              <span class="flex-grow">Cebola Caramelizada</span>
+              <span class="text-primary font-bold">+ R$ 4,00</span>
+            </li>
+            <li class="burger-option">
+              <span class="flex-grow">Molho Fire Extra</span>
+              <span class="text-primary font-bold">+ R$ 2,50</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <a href="/contact" class="bg-primary text-white font-bold py-3 px-8 rounded-lg text-lg inline-flex items-center hover:bg-opacity-90 transition-colors sizzle-animation">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
+        </svg>
+        Montar Meu Burger
+      </a>
+    </div>
+  </section>
+
   <!-- CTA Section -->
   <section class="bg-secondary text-white py-12">
     <div class="container mx-auto px-4 text-center">
       <h2 class="font-display font-bold text-3xl mb-4">Tem alguma dúvida?</h2>
       <p class="text-lg mb-8 max-w-2xl mx-auto">
-        Nossos atendentes estão prontos para ajudar com informações sobre ingredientes, alergias ou qualquer outra questão.
+        Nossos atendentes estão prontos para ajudar com informações sobre ingredientes, alergias ou para fazer seu pedido.
       </p>
       <a href="/contact" class="bg-primary text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-opacity-90 transition-colors">
         Entre em Contato
@@ -56,3 +148,27 @@ const productsByCategory = categories.map(category => ({
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  // Simple interaction for burger options
+  document.addEventListener('DOMContentLoaded', () => {
+    const burgerOptions = document.querySelectorAll('.burger-option');
+    
+    burgerOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        // For base options (first column), unselect others in the same group
+        const closestDiv = option.closest('div');
+        const header = closestDiv?.querySelector('h3');
+        if (header && header.textContent && header.textContent.includes('Base')) {
+          option.closest('div')?.querySelectorAll('.burger-option')?.forEach(opt => {
+            opt.classList.remove('selected');
+          });
+          option.classList.add('selected');
+        } else {
+          // For extras, toggle selection
+          option.classList.toggle('selected');
+        }
+      });
+    });
+  });
+</script>

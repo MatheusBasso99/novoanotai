@@ -1,1 +1,56 @@
 @import 'tailwindcss';
+
+/* Custom Font Variables */
+:root {
+  --font-display: 'Montserrat', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --color-primary: #F54B06;     /* Fiery Orange */
+  --color-secondary: #222222;   /* Charcoal Black */
+  --color-accent: #FFC107;      /* Bright Yellow */
+  --color-dark: #111111;        /* Deep Black */
+  --color-background: #F9F9F9;  /* Light Gray */
+}
+
+/* Base Styles */
+body {
+  font-family: var(--font-body);
+  color: var(--color-dark);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+/* Tailwind Color Extensions */
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+.bg-secondary {
+  background-color: var(--color-secondary);
+}
+
+.bg-accent {
+  background-color: var(--color-accent);
+}
+
+.bg-background {
+  background-color: var(--color-background);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.text-secondary {
+  color: var(--color-secondary);
+}
+
+.text-accent {
+  color: var(--color-accent);
+}
+
+.text-dark {
+  color: var(--color-dark);
+}
+

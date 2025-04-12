@@ -1,9 +1,9 @@
 ---
+// Astro frontmatter
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CategorySection from '../components/CategorySection.astro';
 import { products } from '../data/products';
 
-// Group products by category
 const categories = [...new Set(products.map(product => product.category))];
 const productsByCategory = categories.map(category => ({
   name: category,
@@ -12,7 +12,7 @@ const productsByCategory = categories.map(category => ({
 ---
 
 <BaseLayout title="Cardápio" description="Explore nosso cardápio com hambúrgueres artesanais suculentos e combos irresistíveis">
-  
+
   <!-- Hero Section -->
   <section class="bg-primary text-white py-16">
     <div class="container mx-auto px-4 text-center">
@@ -84,9 +84,10 @@ const productsByCategory = categories.map(category => ({
       </p>
       
       <div class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+        <!-- Base -->
         <div class="bg-background p-6 rounded-lg shadow-md">
           <h3 class="font-display font-bold text-xl mb-4 text-primary">Escolha Sua Base</h3>
-          <ul class="space-y-3">
+          <ul class="space-y-3" id="burger-base">
             <li class="burger-option selected">
               <span class="flex-grow">Hambúrguer Simples (180g)</span>
               <span class="text-primary font-bold">R$ 24,90</span>
@@ -101,74 +102,202 @@ const productsByCategory = categories.map(category => ({
             </li>
           </ul>
         </div>
-        
+
+        <!-- Extras -->
         <div class="bg-background p-6 rounded-lg shadow-md">
-          <h3 class="font-display font-bold text-xl mb-4 text-primary">Escolha Seus Extras</h3>
+          <h3 class="font-display font-bold text-xl mb-4 text-primary">Escolha até dois Extras</h3>
+          <p id="extras-counter" class="text-sm mb-3 font-medium">0 de 2 selecionados</p>
           <ul class="space-y-3">
-            <li class="burger-option">
-              <span class="flex-grow">Bacon Crocante</span>
-              <span class="text-primary font-bold">+ R$ 5,00</span>
+            <li class="burger-option extras-option">
+              <input type="checkbox" name="extras" id="bacon" class="mr-3">
+              <label for="bacon" class="flex-grow cursor-pointer">Bacon Crocante</label>
             </li>
-            <li class="burger-option">
-              <span class="flex-grow">Queijo Extra</span>
-              <span class="text-primary font-bold">+ R$ 3,00</span>
+            <li class="burger-option extras-option">
+              <input type="checkbox" name="extras" id="queijo" class="mr-3">
+              <label for="queijo" class="flex-grow cursor-pointer">Queijo Extra</label>
             </li>
-            <li class="burger-option">
-              <span class="flex-grow">Cebola Caramelizada</span>
-              <span class="text-primary font-bold">+ R$ 4,00</span>
+            <li class="burger-option extras-option">
+              <input type="checkbox" name="extras" id="cebola" class="mr-3">
+              <label for="cebola" class="flex-grow cursor-pointer">Cebola Caramelizada</label>
             </li>
-            <li class="burger-option">
-              <span class="flex-grow">Molho Fire Extra</span>
-              <span class="text-primary font-bold">+ R$ 2,50</span>
+            <li class="burger-option extras-option">
+              <input type="checkbox" name="extras" id="molho" class="mr-3">
+              <label for="molho" class="flex-grow cursor-pointer">Molho Fire Extra</label>
+            </li>
+            <li class="burger-option extras-option">
+              <input type="checkbox" name="extras" id="batata" class="mr-3">
+              <label for="batata" class="flex-grow cursor-pointer">Batata Frita Pequena</label>
             </li>
           </ul>
+          <div id="extras-warning" class="hidden mt-4 p-2 bg-red-100 text-red-700 rounded-md text-sm">
+            Você só pode escolher até 2 extras. Por favor, desmarque um para continuar.
+          </div>
         </div>
-      </div>
+        <div class="mb-4" id="observation-container">
+          <!-- Initial Add Button -->
+          <button 
+            id="add-observation-btn" 
+            class="bg-accent text-dark font-bold py-2 px-4 rounded-lg text-sm w-full mb-2 flex items-center justify-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Adicionar Observação
+          </button>
+          
+          <!-- Edit Button (Hidden initially) -->
+          <button 
+            id="edit-observation-btn" 
+            class="bg-green-100 text-green-700 font-bold py-2 px-4 rounded-lg text-sm w-full mb-2 flex items-center justify-center hidden"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-green-600">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span id="observation-summary">Observação adicionada</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-2 text-green-600">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+            </svg>
+          </button>
+          
+          <!-- Hidden observation form initially -->
+          <div id="observation-form" class="hidden">
+            <textarea 
+              id="observation-text" 
+              placeholder="Exemplo: Sem cebola, trocar queijo cheddar por prato, etc." 
+              class="w-full p-3 border border-gray-300 rounded-lg mb-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              rows="3"
+            ></textarea>
+            <button 
+              id="save-observation-btn" 
+              class="bg-primary text-white font-bold py-2 px-4 rounded-lg text-sm w-full"
+            >
+              Salvar Observação
+            </button>
+          </div>
+          
+          <!-- Success message (hidden initially) -->
+          <div id="observation-success" class="hidden bg-green-100 text-green-700 p-3 rounded-lg flex items-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-green-500">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Observação salva com sucesso!
+          </div>
+        </div>
       
-      <a href="/contact" class="bg-primary text-white font-bold py-3 px-8 rounded-lg text-lg inline-flex items-center hover:bg-opacity-90 transition-colors sizzle-animation">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
-        </svg>
-        Montar Meu Burger
-      </a>
+        <!-- Botão -->
+        <a href="/contact" class="bg-primary text-white font-bold py-3 px-8 rounded-lg text-lg inline-flex items-center hover:bg-opacity-90 transition-colors sizzle-animation">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
+          </svg>
+          Montar Meu Burger
+        </a>
+      </div>
     </div>
   </section>
 
-  <!-- CTA Section -->
-  <section class="bg-secondary text-white py-12">
-    <div class="container mx-auto px-4 text-center">
-      <h2 class="font-display font-bold text-3xl mb-4">Tem alguma dúvida?</h2>
-      <p class="text-lg mb-8 max-w-2xl mx-auto">
-        Nossos atendentes estão prontos para ajudar com informações sobre ingredientes, alergias ou para fazer seu pedido.
-      </p>
-      <a href="/contact" class="bg-primary text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-opacity-90 transition-colors">
-        Entre em Contato
-      </a>
-    </div>
-  </section>
 </BaseLayout>
 
 <script>
-  // Simple interaction for burger options
   document.addEventListener('DOMContentLoaded', () => {
-    const burgerOptions = document.querySelectorAll('.burger-option');
-    
-    burgerOptions.forEach(option => {
+    // BASE SELECTION
+    const baseOptions = document.querySelectorAll('.burger-option:not(.extras-option)');
+    baseOptions.forEach(option => {
       option.addEventListener('click', () => {
-        // For base options (first column), unselect others in the same group
-        const closestDiv = option.closest('div');
-        const header = closestDiv?.querySelector('h3');
-        if (header && header.textContent && header.textContent.includes('Base')) {
-          option.closest('div')?.querySelectorAll('.burger-option')?.forEach(opt => {
-            opt.classList.remove('selected');
-          });
-          option.classList.add('selected');
-        } else {
-          // For extras, toggle selection
-          option.classList.toggle('selected');
-        }
+        baseOptions.forEach(opt => opt.classList.remove('selected'));
+        option.classList.add('selected');
       });
     });
+
+    // EXTRAS SELECTION
+    const extrasOptions = document.querySelectorAll('input[name="extras"]');
+    const extrasCounter = document.getElementById('extras-counter');
+    const extrasWarning = document.getElementById('extras-warning');
+    
+    function updateExtrasCounter() {
+      const selectedCount = document.querySelectorAll('input[name="extras"]:checked').length;
+      
+      if (extrasCounter) {
+        extrasCounter.textContent = `${selectedCount} de 2 selecionados`;
+      }
+      
+      extrasOptions.forEach(option => {
+        if (selectedCount >= 2 && !(option as HTMLInputElement).checked) {
+          (option as HTMLInputElement).disabled = true;
+          option.parentElement?.classList.add('opacity-50');
+        } else {
+          (option as HTMLInputElement).disabled = false;
+          option.parentElement?.classList.remove('opacity-50');
+        }
+      });
+      
+      if (extrasWarning) {
+        extrasWarning.classList.toggle('hidden', selectedCount <= 2);
+      }
+    }
+
+    extrasOptions.forEach(option => {
+      option.addEventListener('change', (e) => {
+        const checkbox = e.target as HTMLInputElement;
+        const selectedCount = document.querySelectorAll('input[name="extras"]:checked').length;
+        
+        if (selectedCount > 2) {
+          checkbox.checked = false;
+          updateExtrasCounter();
+          return;
+        }
+
+        if (checkbox.checked) {
+          checkbox.closest('.extras-option')?.classList.add('selected');
+        } else {
+          checkbox.closest('.extras-option')?.classList.remove('selected');
+        }
+
+        updateExtrasCounter();
+      });
+    });
+
+    updateExtrasCounter();
+
+    // OBSERVATION FUNCTIONALITY
+    const addObservationBtn = document.getElementById('add-observation-btn');
+    const editObservationBtn = document.getElementById('edit-observation-btn');
+    const observationForm = document.getElementById('observation-form');
+    const saveObservationBtn = document.getElementById('save-observation-btn');
+    const observationSuccess = document.getElementById('observation-success');
+    const observationText = document.getElementById('observation-text');
+    const observationSummary = document.getElementById('observation-summary');
+    
+    if (addObservationBtn && editObservationBtn && observationForm && saveObservationBtn && observationSuccess && observationText) {
+      addObservationBtn.addEventListener('click', () => {
+        addObservationBtn.classList.add('hidden');
+        observationForm.classList.remove('hidden');
+      });
+      
+      editObservationBtn.addEventListener('click', () => {
+        editObservationBtn.classList.add('hidden');
+        observationForm.classList.remove('hidden');
+      });
+      
+      saveObservationBtn.addEventListener('click', () => {
+        if ((observationText as HTMLTextAreaElement).value.trim() !== '') {
+          observationForm.classList.add('hidden');
+          observationSuccess.classList.remove('hidden');
+          
+          const summaryText = (observationText as HTMLTextAreaElement).value.trim().substring(0, 20) + 
+                            ((observationText as HTMLTextAreaElement).value.trim().length > 20 ? '...' : '');
+          
+          if (observationSummary) {
+            observationSummary.textContent = summaryText;
+          }
+          
+          setTimeout(() => {
+            observationSuccess.classList.add('hidden');
+            editObservationBtn.classList.remove('hidden');
+          }, 2000);
+        }
+      });
+    }
   });
 </script>
+

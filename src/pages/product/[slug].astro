@@ -22,6 +22,11 @@ if (!product) {
 const relatedProducts = products
   .filter(p => p.category === product.category && p.id !== product.id)
   .slice(0, 3);
+
+// Check if this product includes soda/refrigerante
+const hasSoda = product.ingredients && product.ingredients.some(
+  ingredient => ingredient.toLowerCase().includes('refrigerante')
+);
 ---
 
 <BaseLayout title={product.name} description={product.description}>
@@ -77,6 +82,83 @@ const relatedProducts = products
               </>
             )}
           </div>
+          
+          <!-- Refrigerante Selection (Shown only if product has soda) -->
+          {hasSoda && (
+            <div class="mb-4" id="soda-selection-container">
+              <!-- Initial Selection Button -->
+              <button 
+                id="select-soda-btn" 
+                class="bg-accent text-dark font-bold py-2 px-4 rounded-lg text-sm w-full mb-2 flex items-center justify-center"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 16.5m14.8-1.2A2.25 2.25 0 0018 13.5V9.75m-6-6.75h.008v.008h-.008V3z" />
+                </svg>
+                Escolher Refrigerante
+              </button>
+              
+              <!-- Selected Soda Button (Hidden initially) -->
+              <button 
+                id="selected-soda-btn" 
+                class="bg-green-100 text-green-700 font-bold py-2 px-4 rounded-lg text-sm w-full mb-2 flex items-center justify-center hidden"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-green-600">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span id="selected-soda-text">Refrigerante selecionado</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-2 text-green-600">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                </svg>
+              </button>
+              
+              <!-- Soda selection options (Hidden initially) -->
+              <div id="soda-options" class="hidden bg-white p-4 rounded-lg shadow-md mb-4">
+                <h3 class="font-bold text-lg mb-3 text-dark">Escolha seu refrigerante:</h3>
+                <div class="space-y-2">
+                  <label class="soda-option flex items-center p-2 rounded cursor-pointer hover:bg-gray-100">
+                    <input type="radio" name="soda" value="Coca Cola" class="mr-3">
+                    <span>Coca Cola</span>
+                  </label>
+                  <label class="soda-option flex items-center p-2 rounded cursor-pointer hover:bg-gray-100">
+                    <input type="radio" name="soda" value="Coca Cola Zero" class="mr-3">
+                    <span>Coca Cola Zero</span>
+                  </label>
+                  <label class="soda-option flex items-center p-2 rounded cursor-pointer hover:bg-gray-100">
+                    <input type="radio" name="soda" value="Guaraná Antarctica" class="mr-3">
+                    <span>Guaraná Antarctica</span>
+                  </label>
+                  <label class="soda-option flex items-center p-2 rounded cursor-pointer hover:bg-gray-100">
+                    <input type="radio" name="soda" value="Guaraná Antarctica Zero" class="mr-3">
+                    <span>Guaraná Antarctica Zero</span>
+                  </label>
+                  <label class="soda-option flex items-center p-2 rounded cursor-pointer hover:bg-gray-100">
+                    <input type="radio" name="soda" value="Fanta Laranja" class="mr-3">
+                    <span>Fanta Laranja</span>
+                  </label>
+                  <label class="soda-option flex items-center p-2 rounded cursor-pointer hover:bg-gray-100">
+                    <input type="radio" name="soda" value="Fanta Laranja Zero" class="mr-3">
+                    <span>Fanta Laranja Zero</span>
+                  </label>
+                </div>
+                <div class="mt-4 flex justify-end">
+                  <button 
+                    id="confirm-soda-btn" 
+                    class="bg-primary text-white font-bold py-2 px-4 rounded-lg text-sm"
+                  >
+                    Confirmar
+                  </button>
+                </div>
+              </div>
+              
+              <!-- Success message (hidden initially) -->
+              <div id="soda-success" class="hidden bg-green-100 text-green-700 p-3 rounded-lg flex items-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-green-500">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Refrigerante selecionado com sucesso!
+              </div>
+            </div>
+          )}
           
           <!-- Observation Button -->
           <div class="mb-4" id="observation-container">
@@ -300,6 +382,55 @@ const relatedProducts = products
             observationSuccess.classList.add('hidden');
             editObservationBtn.classList.remove('hidden');
           }, 2000);
+        }
+      });
+    }
+    
+    // Soda selection functionality
+    const selectSodaBtn = document.getElementById('select-soda-btn');
+    const selectedSodaBtn = document.getElementById('selected-soda-btn');
+    const sodaOptions = document.getElementById('soda-options');
+    const confirmSodaBtn = document.getElementById('confirm-soda-btn');
+    const sodaSuccess = document.getElementById('soda-success');
+    const selectedSodaText = document.getElementById('selected-soda-text');
+    
+    if (selectSodaBtn && selectedSodaBtn && sodaOptions && confirmSodaBtn && sodaSuccess && selectedSodaText) {
+      // Show soda options when "Choose Soda" button is clicked
+      selectSodaBtn.addEventListener('click', () => {
+        selectSodaBtn.classList.add('hidden');
+        sodaOptions.classList.remove('hidden');
+      });
+      
+      // Show soda options when "Edit Soda" button is clicked
+      selectedSodaBtn.addEventListener('click', () => {
+        selectedSodaBtn.classList.add('hidden');
+        sodaOptions.classList.remove('hidden');
+      });
+      
+      // Handle confirming the soda selection
+      confirmSodaBtn.addEventListener('click', () => {
+        const selectedSoda = document.querySelector('input[name="soda"]:checked') as HTMLInputElement;
+        
+        if (selectedSoda) {
+          // Hide the options
+          sodaOptions.classList.add('hidden');
+          
+          // Show success message briefly
+          sodaSuccess.classList.remove('hidden');
+          
+          // Update the selected soda text
+          if (selectedSodaText) {
+            selectedSodaText.textContent = selectedSoda.value;
+          }
+          
+          // Hide success message after 2 seconds and show the selection button
+          setTimeout(() => {
+            sodaSuccess.classList.add('hidden');
+            selectedSodaBtn.classList.remove('hidden');
+          }, 2000);
+        } else {
+          // Alert if no soda was selected
+          alert('Por favor, selecione um refrigerante antes de confirmar.');
         }
       });
     }

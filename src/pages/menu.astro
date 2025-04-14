@@ -35,36 +35,7 @@ const productsByCategory = categories.map(category => ({
         ))}
       </div>
       
-      <!-- Guia de Picância -->
-      <div class="bg-white p-5 rounded-lg shadow-md mb-12 max-w-2xl mx-auto">
-        <h3 class="font-display font-bold text-xl mb-3 text-primary">Guia de Picância</h3>
-        <div class="flex items-center justify-between flex-wrap gap-4">
-          <div class="flex items-center">
-            <div class="flex mr-2">
-              <span class="spicy-dot active"></span>
-              <span class="spicy-dot opacity-30"></span>
-              <span class="spicy-dot opacity-30"></span>
-            </div>
-            <span class="text-sm">Suave</span>
-          </div>
-          <div class="flex items-center">
-            <div class="flex mr-2">
-              <span class="spicy-dot active"></span>
-              <span class="spicy-dot active"></span>
-              <span class="spicy-dot opacity-30"></span>
-            </div>
-            <span class="text-sm">Picante</span>
-          </div>
-          <div class="flex items-center">
-            <div class="flex mr-2">
-              <span class="spicy-dot active"></span>
-              <span class="spicy-dot active"></span>
-              <span class="spicy-dot active"></span>
-            </div>
-            <span class="text-sm">Extra Picante</span>
-          </div>
-        </div>
-      </div>
+
       
       {productsByCategory.map(category => (
         <CategorySection 

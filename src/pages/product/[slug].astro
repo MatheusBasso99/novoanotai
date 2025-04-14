@@ -18,6 +18,7 @@ if (!product) {
   return Astro.redirect('/404');
 }
 
+const discountedPrice = product.price * 0.8;
 // Get related products (same category, excluding current product)
 const relatedProducts = products
   .filter(p => p.category === product.category && p.id !== product.id)
@@ -59,7 +60,13 @@ const hasSoda = product.ingredients && product.ingredients.some(
           <h1 class="font-display font-bold text-2xl sm:text-3xl md:text-4xl mt-3 mb-4 text-dark">{product.name}</h1>
           
           <div class="flex flex-wrap items-center gap-2 mb-6">
-            <span class="text-2xl font-bold text-primary">R$ {product.price.toFixed(2)}</span>
+            <div class="flex flex-col">
+              <span class="text-lg line-through text-gray-500">R$ {product.price.toFixed(2)}</span>
+              <span class="text-2xl font-bold text-primary">R$ {discountedPrice.toFixed(2)}</span>
+            </div>
+            <span class="bg-accent text-dark text-sm font-bold px-2 py-1 rounded">
+              -20%
+            </span>
             {product.tags && product.tags.map(tag => (
               <span class="bg-accent bg-opacity-20 text-dark text-xs px-2 py-1 rounded">
                 {tag}

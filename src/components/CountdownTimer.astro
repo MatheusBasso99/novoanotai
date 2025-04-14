@@ -1,0 +1,39 @@
+---
+// Componente CountdownTimer.astro
+// Este componente mostra uma contagem regressiva para o fim da promoção
+
+// Definir a data final da promoção (7 dias a partir de agora)
+const currentDate = new Date();
+const endDate = new Date();
+endDate.setDate(currentDate.getDate() + 7);
+
+// Formatação da data para exibição
+const formatOptions: Intl.DateTimeFormatOptions = { 
+  day: '2-digit', 
+  month: 'long', 
+  year: 'numeric' 
+};
+const formattedEndDate = endDate.toLocaleDateString('pt-BR', formatOptions);
+---
+
+<div class="countdown-container bg-white p-4 rounded-lg shadow-md">
+  <h3 class="text-center font-bold text-lg mb-2">A promoção termina em:</h3>
+  
+  <div class="flex justify-center gap-4 mb-3">
+    <div class="flex flex-col items-center">
+      <div id="days" class="bg-primary text-white text-2xl font-bold rounded w-16 h-16 flex items-center justify-center">00</div>
+      <span class="text-sm mt-1">Dias</span>
+    </div>
+    <div class="flex flex-col items-center">
+      <div id="hours" class="bg-primary text-white text-2xl font-bold rounded w-16 h-16 flex items-center justify-center">00</div>
+      <span class="text-sm mt-1">Horas</span>
+    </div>
+    <div class="flex flex-col items-center">
+      <div id="minutes" class="bg-primary text-white text-2xl font-bold rounded w-16 h-16 flex items-center justify-center">00</div>
+      <span class="text-sm mt-1">Minutos</span>
+    </div>
+    <div class="flex flex-col items-center">
+      <div id="seconds" class="bg-primary text-white text-2xl font-bold rounded w-16 h-16 flex items-center justify-center">00</div>
+      <span class="text-sm mt-1">Segundos</span>
+    </div>
+  </div>

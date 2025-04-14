@@ -1,0 +1,55 @@
+---
+// FloatingPromoBanner.astro - Banner que aparece ao rolar a página
+---
+
+<div id="floating-promo-banner" class="fixed bottom-0 left-0 right-0 bg-[#E53935] text-white p-3 transform translate-y-full transition-transform duration-300 z-50 shadow-lg">
+    <div class="container mx-auto px-4 flex flex-wrap justify-between items-center">
+      <div class="flex items-center mb-2 md:mb-0">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 animate-pulse">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+        </svg>
+        <span class="font-bold">PROMOÇÃO: 20% OFF EM TODO O SITE!</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="/menu" class="bg-white text-[#E53935] font-bold py-1 px-4 rounded-lg text-sm hover:bg-opacity-90 transition-colors">
+          Aproveitar
+        </a>
+        <button id="close-floating-banner" class="text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Script para mostrar o banner flutuante após rolagem
+    document.addEventListener('DOMContentLoaded', () => {
+      const floatingBanner = document.getElementById('floating-promo-banner');
+      const closeButton = document.getElementById('close-floating-banner');
+      
+      if (floatingBanner && closeButton) {
+        // Verificar se o banner já foi fechado nesta sessão
+        const bannerClosed = sessionStorage.getItem('promoBannerClosed');
+        
+        if (!bannerClosed) {
+          // Mostrar o banner após rolagem de 300px
+          let scrollTriggered = false;
+          
+          window.addEventListener('scroll', () => {
+            if (window.scrollY > 300 && !scrollTriggered) {
+              floatingBanner.classList.remove('translate-y-full');
+              scrollTriggered = true;
+            }
+          });
+          
+          // Fechar o banner
+          closeButton.addEventListener('click', () => {
+            floatingBanner.classList.add('translate-y-full');
+            sessionStorage.setItem('promoBannerClosed', 'true');
+          });
+        }
+      }
+    });
+  </script>

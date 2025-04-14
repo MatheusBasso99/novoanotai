@@ -11,6 +11,9 @@ interface Props {
 }
 
 const { id, name, price, description, image, slug, isCombo = false, spicyLevel = 0 } = Astro.props;
+
+// Calcular o preço com desconto (20% off)
+const discountedPrice = price * 0.8;
 ---
 
 <div class="menu-item hover-scale relative">
@@ -40,7 +43,10 @@ const { id, name, price, description, image, slug, isCombo = false, spicyLevel =
     
     <p class="text-gray-600 text-sm line-clamp-2 mt-1 mb-2">{description}</p>
     <div class="flex justify-between items-center mt-3">
-      <span class="font-bold text-primary">R$ {price.toFixed(2)}</span>
+      <div class="flex flex-col">
+        <span class="text-gray-500 line-through text-sm">R$ {price.toFixed(2)}</span>
+        <span class="font-bold text-primary">R$ {discountedPrice.toFixed(2)}</span>
+      </div>
       <a href={`/product/${slug}`} class="bg-secondary text-white py-1.5 px-4 rounded text-sm hover:bg-opacity-90 transition-colors">
         Ver detalhes
       </a>
